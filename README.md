@@ -1,3 +1,3 @@
 # Today
 
-A new Flutter project.
+Today is a daily calendar app created with Flutter, that helps organize your day.
