@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-// import 'package:shared_preferences/shared_preferences.dart';
+import 'package:theme_provider/theme_provider.dart';
+import 'globals.dart' as globals;
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -28,9 +28,8 @@ class SettingsScreen extends StatelessWidget {
             IconButton(
                 icon: const Icon(Icons.lightbulb),
                 onPressed: () async {
-                  Get.isDarkMode
-                      ? Get.changeTheme(ThemeData.light())
-                      : Get.changeTheme(ThemeData.dark());
+                  globals.darkMode = !globals.darkMode;
+                  ThemeProvider.controllerOf(context).nextTheme();
                 }),
           ]),
         ),
