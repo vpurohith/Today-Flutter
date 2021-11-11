@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:theme_provider/theme_provider.dart';
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'globals.dart' as globals;
 
 class SettingsScreen extends StatelessWidget {
@@ -29,7 +29,9 @@ class SettingsScreen extends StatelessWidget {
                 icon: const Icon(Icons.lightbulb),
                 onPressed: () async {
                   globals.darkMode = !globals.darkMode;
-                  ThemeProvider.controllerOf(context).nextTheme();
+                  !globals.darkMode
+                      ? AdaptiveTheme.of(context).setDark()
+                      : AdaptiveTheme.of(context).setLight();
                 }),
           ]),
         ),
