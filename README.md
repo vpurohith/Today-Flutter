@@ -7,7 +7,7 @@ Today is a daily calendar app created with Flutter, that helps you organize your
 
 package:flutter/material.dart
 
-package:theme_provider/theme_provider.dart
+package:adaptive_theme/adaptive_theme.dart
 
 package:hive/hive.dart
 
