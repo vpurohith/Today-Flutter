@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:flutter/material.dart';
 part 'event.g.dart';
 
 @HiveType(typeId: 0)
@@ -12,5 +13,12 @@ class Event extends HiveObject {
   @HiveField(2)
   String color;
 
-  Event({required this.title, required this.color});
+  @HiveField(3)
+  int? realColor;
+
+  Event({
+    required this.title,
+    required this.color,
+    required this.realColor,
+  });
 }

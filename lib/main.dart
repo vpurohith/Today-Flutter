@@ -39,18 +39,18 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   TextEditingController nameController = TextEditingController();
 
-  List<String> entries = <String>[];
-  List<int> colorCodes = <int>[];
-
-  void addItemToList() {
-    setState(() {
-      entries.insert(entries.length, nameController.text);
-      colorCodes.insert(colorCodes.length, 200);
-    });
+  void _onFormSubmit() {
+    Box<Event> eventBox = Hive.box<Event>(HiveBoxes.event);
+    eventBox.add(Event(
+      title: title,
+      color: color,
+      realColor: currColor.value,
+    ));
   }
 
   late String title;
   late String color;
+  late Color currColor = pickerColor;
 
   Color pickerColor = Color(0xff443a49);
   Color currentColor = Color(0xff443a49);
@@ -62,33 +62,25 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return AdaptiveTheme(
-      light: ThemeData(
-        brightness: Brightness.light,
-        primarySwatch: Colors.red,
-      ),
+      light:
+          ThemeData(brightness: Brightness.light, primarySwatch: Colors.blue),
       dark: ThemeData(
         brightness: Brightness.dark,
-        primarySwatch: Colors.red,
+        primarySwatch: Colors.blue,
       ),
       initial: widget.savedThemeMode ?? AdaptiveThemeMode.light,
       builder: (theme, darkTheme) => MaterialApp(
         theme: theme,
         home: Scaffold(
+          resizeToAvoidBottomInset: false,
           body: ValueListenableBuilder(
               valueListenable: Hive.box<Event>(HiveBoxes.event).listenable(),
               builder: (context, box, widget) {
                 return Column(
-                  children: [
-                    const SettingsButton(),
-                    /*
-                    SingleChildScrollView(
-                      child: BlockPicker(
-                        pickerColor: currentColor,
-                        onColorChanged: changeColor,
-                      ),
-                    ), */
-                    const TopText(),
-                    EventListView(entries: entries, colorCodes: colorCodes)
+                  children: const [
+                    SettingsButton(),
+                    TopText(),
+                    EventListView()
                   ],
                 );
               }),
@@ -110,27 +102,55 @@ class _MyAppState extends State<MyApp> {
                             color: globals.darkMode
                                 ? Colors.black
                                 : Colors.white)),
-                    content: TextField(
-                      controller: nameController,
-                      style: TextStyle(
-                          color:
-                              globals.darkMode ? Colors.black : Colors.white),
-                      decoration: InputDecoration(
-                        border: const OutlineInputBorder(),
-                        labelText: 'New Event',
-                        labelStyle: TextStyle(
-                            color:
-                                globals.darkMode ? Colors.black : Colors.white),
-                      ),
-                    ),
+                    content: SingleChildScrollView(
+                        // new line
+                        child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        TextField(
+                          controller: nameController,
+                          style: TextStyle(
+                              color: globals.darkMode
+                                  ? Colors.black
+                                  : Colors.white),
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            labelText: 'New Event',
+                            labelStyle: TextStyle(
+                                color: globals.darkMode
+                                    ? Colors.black
+                                    : Colors.white),
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 20.0),
+                            child: Text('Choose the event color: ',
+                                style: TextStyle(
+                                    color: globals.darkMode
+                                        ? Colors.black
+                                        : Colors.white)),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 10.0),
+                          child: BlockPicker(
+                            pickerColor: currentColor,
+                            onColorChanged: changeColor,
+                          ),
+                        ),
+                      ],
+                    )),
                     actions: <Widget>[
                       TextButton(
                         onPressed: () => {
                           Navigator.pop(context, 'OK'),
                           title = nameController.text,
-                          color = '200',
+                          color = pickerColor.toString(),
+                          currColor = pickerColor,
                           _onFormSubmit(),
-                          addItemToList(),
+                          nameController.clear(),
                         },
                         child: const Text('OK'),
                       ),
@@ -150,10 +170,5 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
-  }
-
-  void _onFormSubmit() {
-    Box<Event> eventBox = Hive.box<Event>(HiveBoxes.event);
-    eventBox.add(Event(title: title, color: color));
   }
 }

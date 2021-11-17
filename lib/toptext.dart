@@ -7,7 +7,6 @@ class TopText extends StatelessWidget {
     return Column(
       children: [
         Container(
-          // color: Colors.pink,
           margin: const EdgeInsets.only(top: 60.0),
           child: Column(
             children: <Widget>[
