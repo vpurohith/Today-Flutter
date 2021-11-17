@@ -25,14 +25,31 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
             const Text('Settings', style: TextStyle(fontSize: 30)),
-            IconButton(
-                icon: const Icon(Icons.lightbulb),
-                onPressed: () async {
-                  globals.darkMode = !globals.darkMode;
-                  !globals.darkMode
-                      ? AdaptiveTheme.of(context).setDark()
-                      : AdaptiveTheme.of(context).setLight();
-                }),
+            Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                      margin: const EdgeInsets.only(top: 10.0, left: 20.0),
+                      child: const Text('Dark Mode Toggle: ',
+                          style: TextStyle(fontSize: 16)),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: Container(
+                        margin: const EdgeInsets.only(top: 10.0, right: 20.0),
+                        child: IconButton(
+                            icon: const Icon(Icons.lightbulb),
+                            onPressed: () async {
+                              globals.darkMode = !globals.darkMode;
+                              !globals.darkMode
+                                  ? AdaptiveTheme.of(context).setDark()
+                                  : AdaptiveTheme.of(context).setLight();
+                            })),
+                  ),
+                ]),
           ]),
         ),
       ),

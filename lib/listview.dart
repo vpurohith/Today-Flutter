@@ -127,7 +127,7 @@ class EventListView extends StatelessWidget {
                       );
                     },
                     child: Card(
-                      elevation: 3.0,
+                      elevation: 5,
                       child: Container(
                         height: 50,
                         color: Color(res!.realColor!),

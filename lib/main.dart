@@ -106,19 +106,22 @@ class _MyAppState extends State<MyApp> {
                         child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        TextField(
-                          controller: nameController,
-                          style: TextStyle(
-                              color: globals.darkMode
-                                  ? Colors.black
-                                  : Colors.white),
-                          decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
-                            labelText: 'New Event',
-                            labelStyle: TextStyle(
+                        Container(
+                          margin: const EdgeInsets.only(top: 20),
+                          child: TextField(
+                            controller: nameController,
+                            style: TextStyle(
                                 color: globals.darkMode
                                     ? Colors.black
                                     : Colors.white),
+                            decoration: InputDecoration(
+                              border: const OutlineInputBorder(),
+                              labelText: 'New Event',
+                              labelStyle: TextStyle(
+                                  color: globals.darkMode
+                                      ? Colors.black
+                                      : Colors.white),
+                            ),
                           ),
                         ),
                         Align(
