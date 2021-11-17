@@ -15,7 +15,6 @@ void main() async {
   await Hive.initFlutter();
   Hive.registerAdapter(EventAdapter());
   await Hive.openBox<Event>(HiveBoxes.event);
-  await Hive.openBox('darkModeBox');
 
   WidgetsFlutterBinding.ensureInitialized();
   final savedThemeMode = await AdaptiveTheme.getThemeMode();
@@ -52,8 +51,8 @@ class _MyAppState extends State<MyApp> {
   late String color;
   late Color currColor = pickerColor;
 
-  Color pickerColor = Color(0xff443a49);
-  Color currentColor = Color(0xff443a49);
+  Color pickerColor = const Color(0xff443a49);
+  Color currentColor = const Color(0xff443a49);
 
   void changeColor(Color color) {
     setState(() => pickerColor = color);

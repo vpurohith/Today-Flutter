@@ -15,17 +15,17 @@ class EventListView extends StatelessWidget {
     late String title;
     late String color = 'test';
 
-    Color pickerColor = Color(0xff443a49);
-    Color currentColor = Color(0xff443a49);
+    // Color pickerColor = const Color(0xff443a49);
+    // Color currentColor = const Color(0xff443a49);
 
-    void _onEventChange(index, title, color) {
+    void _onEventChange(index, title, color, actColor) {
       Box<Event> eventBox = Hive.box<Event>(HiveBoxes.event);
       eventBox.putAt(
           index,
           Event(
             title: title,
             color: color,
-            realColor: pickerColor.value,
+            realColor: actColor,
           ));
     }
 
@@ -51,6 +51,7 @@ class EventListView extends StatelessWidget {
                         builder: (BuildContext context) => AlertDialog(
                           title: Text(res?.title ?? 'Error!'),
                           content: Column(
+                            mainAxisSize: MainAxisSize.min,
                             children: [
                               TextField(
                                 controller: nameController,
@@ -67,6 +68,41 @@ class EventListView extends StatelessWidget {
                                           : Colors.white),
                                 ),
                               ),
+                              Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: <Widget>[
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Container(
+                                        margin:
+                                            const EdgeInsets.only(top: 30.0),
+                                        child: Text('Delete? ',
+                                            style: TextStyle(
+                                                color: globals.darkMode
+                                                    ? Colors.black
+                                                    : Colors.white)),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.centerRight,
+                                      child: Container(
+                                        margin:
+                                            const EdgeInsets.only(top: 30.0),
+                                        child: IconButton(
+                                          icon: Icon(
+                                            Icons.delete,
+                                            color: Colors.red[700],
+                                            size: 35.0,
+                                          ),
+                                          onPressed: () {
+                                            res!.delete();
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  ]),
                             ],
                           ),
                           actions: <Widget>[
@@ -80,7 +116,8 @@ class EventListView extends StatelessWidget {
                               onPressed: () => {
                                 Navigator.pop(context, 'OK'),
                                 title = nameController.text,
-                                _onEventChange(index, title, color),
+                                _onEventChange(
+                                    index, title, color, res!.realColor!),
                                 nameController.clear(),
                               },
                               child: const Text('OK'),
